@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({ path: __dirname + '/.env' });
 const {createConnection} = require('mysql2/promise');
 const fs = require('fs');
 
