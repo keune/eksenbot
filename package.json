@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "@atproto/api": "^0.10.4",
+    "axios": "^1.6.7",
+    "dotenv": "^16.4.5",
+    "mysql2": "^3.9.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-google": "^0.14.0"
+  },
+  "scripts": {
+    "lint": "eslint ."
+  }  
+}
