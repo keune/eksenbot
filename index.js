@@ -1,4 +1,4 @@
-require('dotenv').config({ path: __dirname + '/.env' })
+require('dotenv').config({path: __dirname + '/.env'});
 const {BskyAgent, RichText} = require('@atproto/api');
 const axios = require('axios');
 const dotenv = require('dotenv');
@@ -119,7 +119,32 @@ const getYtVideoIdFromDB = async (artistName, trackName) => {
 
           const ytVideoKey = await getYtVideoIdFromDB(artistName, trackName);
 
-          await postToBsky(artistName, trackName, ytVideoKey);
+          let emo = '';
+          switch (artistName) {
+            case 'Radiohead':
+              switch (trackName) {
+                case 'Pyramid Song':
+                  emo = '🔺🎶';
+                  break;
+                case 'Kid A':
+                  emo = '👶🅰️';
+                  break;
+                case '2 + 2 = 5':
+                  emo = '✌️+✌️=🖐️';
+                  break;
+              }
+              break;
+            case 'AC/DC':
+              emo = '⚡';
+              break;
+          }
+          let text = `${artistName} - ${trackName}`;
+          if (emo) {
+            text = `${emo} ${text}`;
+          }
+          text += ' #radyoeksen';
+
+          await postToBsky(artistName, trackName, text, ytVideoKey);
         }
       }
     }
@@ -129,7 +154,7 @@ const getYtVideoIdFromDB = async (artistName, trackName) => {
   process.exit();
 })();
 
-const postToBsky = async (artistName, trackName, videoSrcKey = null) => {
+const postToBsky = async (artistName, trackName, text = null, videoSrcKey = null) => {
   dotenv.config();
   const agent = new BskyAgent({
     service: 'https://bsky.social',
@@ -164,8 +189,9 @@ const postToBsky = async (artistName, trackName, videoSrcKey = null) => {
     }
   }
 
+  if (!text) text = `${artistName} - ${trackName}`;
   const rt = new RichText({
-    text: `${artistName} - ${trackName}`,
+    text: text,
   });
 
   await rt.detectFacets(agent);

@@ -22,6 +22,6 @@ module.exports = {
     'ecmaVersion': 'latest',
   },
   'rules': {
-    'max-len': ['error', 100]
+    'max-len': ['error', 100],
   },
 };
