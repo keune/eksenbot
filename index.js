@@ -138,6 +138,28 @@ const getYtVideoIdFromDB = async (artistName, trackName) => {
               emo = '⚡';
               break;
           }
+
+          const today = new Date();
+          if (today.getMonth() === 3 && today.getDate() === 1) {
+            if (artistName.includes('Love') || trackName.includes('Love')) {
+              artistName = artistName.replace(/Love/g, 'Lavaş');
+              trackName = trackName.replace(/Love/g, 'Lavaş');
+              trackName += ' 🌯';
+              emo = '🌯';
+            }
+
+            if (trackName.includes('Baby')) {
+              trackName = trackName.replace(/Baby/g, 'Baboli');
+            }
+
+            artistName = artistName.replace(/Garbage/g, 'Garabacı');
+
+            if (artistName.toLowerCase().includes('the smiths')) {
+              emo += '🥯';
+              artistName = artistName.replace(/the smiths/gi, 'The Simits');
+            }
+          }
+
           let text = `${artistName} - ${trackName}`;
           if (emo) {
             text = `${emo} ${text}`;
