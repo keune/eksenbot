@@ -186,10 +186,14 @@ const getBskyAgent = async () => {
       service: 'https://bsky.social',
     });
 
-    await bskyAgent.login({
-      identifier: process.env.BSKY_IDENTIFIER,
-      password: process.env.BSKY_PASS,
-    });
+    try {
+      await bskyAgent.login({
+        identifier: process.env.BSKY_IDENTIFIER,
+        password: process.env.BSKY_PASS,
+      });
+    } catch (error) {
+      bskyAgent = null;
+    }
   }
 
   return bskyAgent;
@@ -197,6 +201,10 @@ const getBskyAgent = async () => {
 
 const postToBsky = async (artistName, trackName, text = null, videoSrcKey = null) => {
   const agent = await getBskyAgent();
+  if (agent === null) {
+    d('Could not get Bsky agent');
+    return;
+  }
 
   let embedData = null;
 
