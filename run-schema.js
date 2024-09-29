@@ -1,10 +1,10 @@
-require('dotenv').config({path: __dirname + '/.env'});
-const {createConnection} = require('mysql2/promise');
-const fs = require('fs');
+import './env-config.js';
+import { createConnection } from 'mysql2/promise';
+import { readFileSync } from 'fs';
 
 (async () => {
   try {
-    const sqlContent = fs.readFileSync('./schema.sql', 'utf8');
+    const sqlContent = readFileSync('./schema.sql', 'utf8');
 
     const dbConnection = await createConnection({
       host: process.env.MYSQL_HOST,

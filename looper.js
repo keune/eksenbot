@@ -1,10 +1,10 @@
-require('dotenv').config({path: __dirname + '/.env'});
-const fs = require('fs');
-const os = require('os');
-const path = require('path');
-const {execSync} = require('child_process');
-const {sleep, d} = require('./helpers');
-const {checkAndPost} = require('./eksenbot');
+import './env-config.js';
+import * as fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { execSync } from 'child_process';
+import { sleep, d } from './helpers.js';
+import { checkAndPost } from './eksenbot.js';
 
 const LOCK_FILE = path.join(os.tmpdir(), 'eksenbot-looper.lock');
 const PROCESS_TITLE='eksnbt-loopr';

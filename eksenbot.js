@@ -1,9 +1,8 @@
-require('dotenv').config({path: __dirname + '/.env'});
-const {BskyAgent, RichText} = require('@atproto/api');
-const axios = require('axios');
-const dotenv = require('dotenv');
-const {createConnection} = require('mysql2/promise');
-const {d, propositionCase, toTitleCase} = require('./helpers');
+import './env-config.js';
+import {AtpAgent, RichText} from '@atproto/api';
+import axios from 'axios';
+import {createConnection} from 'mysql2/promise';
+import {d, propositionCase, toTitleCase} from './helpers.js';
 
 let dbConnection = null;
 const getDbConnection = async () => {
@@ -36,7 +35,7 @@ const getLastEksenRowFromDB = async () => {
   const dbConnection = await getDbConnection();
   if (dbConnection) {
     const [rows] = await dbConnection.execute(
-        'select artistName, trackName from eksen order by id desc limit 1',
+      'select artistName, trackName from eksen order by id desc limit 1',
     );
 
     if (rows.length == 1) {
@@ -53,8 +52,8 @@ const getYtVideoIdFromDB = async (artistName, trackName) => {
     const sql = `select youtubeVideoId from youtube 
     where artistName = ? and trackName = ? and isCorrect = 1 limit 1`;
     const [rows] = await dbConnection.execute(
-        sql,
-        [artistName, trackName],
+      sql,
+      [artistName, trackName],
     );
 
     if (rows.length == 1) {
@@ -113,8 +112,8 @@ const checkAndPost = async () => {
       if (!same) {
         const sql = 'insert into eksen(artistName, trackName, responseTxt) values(?, ?, ?)';
         const [rows] = await dbConnection.execute(
-            sql,
-            [artistName, trackName, JSON.stringify(npData)],
+          sql,
+          [artistName, trackName, JSON.stringify(npData)],
         );
 
         if (rows.insertId) {
@@ -181,8 +180,7 @@ const checkAndPost = async () => {
 let bskyAgent = null;
 const getBskyAgent = async () => {
   if (bskyAgent === null) {
-    dotenv.config();
-    bskyAgent = new BskyAgent({
+    bskyAgent = new AtpAgent({
       service: 'https://bsky.social',
     });
 
@@ -248,7 +246,7 @@ const postToBsky = async (artistName, trackName, text = null, videoSrcKey = null
   await agent.post(postData);
 };
 
-module.exports = {
+export {
   getDbConnection,
   getLastEksenRowFromDB,
   getYtVideoIdFromDB,

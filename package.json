@@ -1,9 +1,12 @@
 {
+  "type": "module",
+  "author": "Ahmet Kun",
+  "license": "ISC",
   "dependencies": {
-    "@atproto/api": "^0.10.4",
-    "axios": "^1.6.7",
+    "@atproto/api": "^0.13.8",
+    "axios": "^1.7.7",
     "dotenv": "^16.4.5",
-    "mysql2": "^3.9.2"
+    "mysql2": "^3.11.3"
   },
   "devDependencies": {
     "eslint": "^8.57.0",

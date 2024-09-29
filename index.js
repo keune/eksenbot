@@ -1,4 +1,4 @@
-const {checkAndPost} = require('./eksenbot');
+import {checkAndPost} from './eksenbot.js';
 
 (async () => {
   await checkAndPost();
