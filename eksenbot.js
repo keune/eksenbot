@@ -224,7 +224,7 @@ const postToBsky = async (artistName, trackName, text = null, videoSrcKey = null
         },
       };
     } catch (error) {
-      console.error('Error fetching thumbnail img: ', error.message);
+      console.log(`Error fetching thumbnail img: ${videoSrcKey}`, error.message);
     }
   }
 
