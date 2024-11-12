@@ -208,23 +208,40 @@ const postToBsky = async (artistName, trackName, text = null, videoSrcKey = null
 
   if (videoSrcKey) {
     const ytUrl = `https://www.youtube.com/watch?v=${videoSrcKey}`;
-    const ytThumbnailImgUrl = `https://img.youtube.com/vi/${videoSrcKey}/maxresdefault.jpg`;
-    try {
-      const thumbnailResponse = await axios.get(ytThumbnailImgUrl, {responseType: 'arraybuffer'});
-      const uint8Array = new Uint8Array(thumbnailResponse.data);
-      const thumbnailUploadResponse = await agent.uploadBlob(uint8Array, {encoding: 'image/jpeg'});
+    const ytThumbnailImgUrls = [
+      `https://img.youtube.com/vi/${videoSrcKey}/maxresdefault.jpg`,
+      `https://i.ytimg.com/vi/${videoSrcKey}/hqdefault.jpg`
+    ];
+    let thumbnailResponse = false;
+    for (const ytThumbnailImgUrl of ytThumbnailImgUrls) {
+      try {
+        thumbnailResponse = await axios.get(ytThumbnailImgUrl, {responseType: 'arraybuffer'});
+        if (thumbnailResponse) {
+          break;
+        }
+      } catch (error) {
+        //
+      }
+    }
+    if (thumbnailResponse) {
+      try {
+        const uint8Array = new Uint8Array(thumbnailResponse.data);
+        const thumbnailUploadResponse = await agent.uploadBlob(uint8Array, {encoding: 'image/jpeg'});
 
-      embedData = {
-        $type: 'app.bsky.embed.external',
-        external: {
-          uri: ytUrl,
-          title: trackName,
-          description: artistName,
-          thumb: thumbnailUploadResponse.data.blob,
-        },
-      };
-    } catch (error) {
-      console.log(`Error fetching thumbnail img: ${videoSrcKey}`, error.message);
+        embedData = {
+          $type: 'app.bsky.embed.external',
+          external: {
+            uri: ytUrl,
+            title: trackName,
+            description: artistName,
+            thumb: thumbnailUploadResponse.data.blob,
+          },
+        };
+      } catch (error) {
+        console.log(`Error fetching thumbnail img: ${videoSrcKey}`, error.message);
+      }
+    } else {
+      console.log(`Could not fetch thumbnail img: ${videoSrcKey}`);
     }
   }
 
